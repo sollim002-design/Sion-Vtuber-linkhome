@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3a9c8" />
+    <meta name="description" content="HanasakiSion의 작업실과 공식 채널을 만나보세요." />
+    <title>HanasakiSion — studio notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+    <main class="site">
+      <header class="masthead">
+        <a class="wordmark" href="./index.html">HANA<span>SAKI</span></a>
+        <button class="share" id="shareButton" type="button"><span>share</span><b>↗</b></button>
+      </header>
+      <div class="layout">
+        <section class="intro">
+          <p class="eyebrow">LUNARIAN FLOWER / 2026</p>
+          <div class="portrait-wrap">
+            <div class="orbit orbit-one" aria-hidden="true"></div>
+            <div class="orbit orbit-two" aria-hidden="true"></div>
+            <img class="portrait" src="./profile.png" alt="핑크 머리의 HanasakiSion 일러스트" />
+            <span class="portrait-tag">花咲しおん</span>
+          </div>
+          <h1>소리를 피우는<br /><em>HanasakiSion</em></h1>
+          <p class="intro-copy">루나리안 플로르에서 온 버튜버 하나사키 시온 | GreyMusicStudio 소속 믹스 엔지니어 · 보컬 프로듀서 🌸🐰와줘서 고마워요!🐰🌸</p>
+          <div class="social-row">
+            <a class="studio-link" href="https://greymusicstudio-site.pages.dev/" target="_blank" rel="noreferrer"><span class="studio-link-icon"><img src="./greymusicstudio-logo.png" alt="" /></span><span>GreyMusicStudio 홈페이지</span><b>↗</b></a>
+          </div>
+        </section>
+        <section class="studio" aria-label="HanasakiSion 공식 링크">
+          <div class="studio-heading">
+            <div><p class="eyebrow">FIND ME HERE</p><h2>CONTACT SION</h2></div>
+            <span class="live-dot is-checking" id="liveStatus"><i></i><span>checking</span></span>
+          </div>
+          <div class="link-grid" id="links"></div>
+        </section>
+      </div>
+      <footer class="footer"><span>GREY MUSIC STUDIO</span><span>© 2026 HanasakiSion</span></footer>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./script.js?v=6"></script>
+  </body>
+</html>
