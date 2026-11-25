@@ -13,7 +13,6 @@ const assets = [
   "chzzk-logo.svg",
   "youtube-logo.svg",
   "toonation-logo.png",
-  "artmug-logo.png",
 ];
 
 for (const asset of assets) {
