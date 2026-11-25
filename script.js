@@ -1,28 +1,66 @@
-const LINKS = [
-  { title: "花咲しおん\n치지직", caption: "LIVE / STREAM", icon: "chzzk", url: "https://chzzk.naver.com/64baf88d96b2b7b8504e58446f86e1c6" },
-  { title: "HanasakiSion\n아트머그", caption: "COMMISSION / ART SERVICES", icon: "artmug", url: "https://artmug.kr/index.php?channel=view&uid=45989" },
-  { title: "외주 녹음\n커미션", caption: "RECORDING / COMMISSION", icon: "artmug", url: "https://artmug.kr/index.php?channel=view&uid=50227" },
-  { title: "HanasakiSion\n트위터", caption: "X / TWITTER", icon: "twitter", url: "https://x.com/hanasakision" },
-  { title: "HanasakiSion\nYouTube", caption: "VIDEO / CHANNEL", icon: "youtube", url: "https://www.youtube.com/channel/UCy-t0ff_XWtwnyno05uniyQ" },
+const LINK_GROUPS = [
+  { title: "공식 채널", className: "official", links: [
+    { title: "치지직", caption: "LIVE / STREAM", icon: "chzzk", url: "https://chzzk.naver.com/64baf88d96b2b7b8504e58446f86e1c6" },
+    { title: "YouTube", caption: "UTAITE / CLIPS / VOD", icon: "youtube", url: "https://www.youtube.com/channel/UCy-t0ff_XWtwnyno05uniyQ" },
+  ]},
+  { title: "SNS", className: "social", links: [
+    { title: "트위터", caption: "X / TWITTER", icon: "twitter", url: "https://x.com/hanasakision" },
+    { title: "TikTok", caption: "SHORTS / TIKTOK", icon: "tiktok", url: "https://www.tiktok.com/@hanasakision" },
+  ]},
+  { title: "후원", className: "support", links: [
+    { title: "투네이션", caption: "SEND A FLOWER", icon: "toonation", url: "https://toon.at/donate/hanasakision" },
+  ]},
+  { title: "CONTACT", className: "contact", links: [
+    { title: "Business Contact", caption: "kiyolive26@gmail.com", icon: "mail", url: "mailto:kiyolive26@gmail.com" },
+    { title: "Personal Contact", caption: "hanasakision0404@gmail.com", icon: "mail", url: "mailto:hanasakision0404@gmail.com" },
+  ]},
 ];
 const linksRoot = document.querySelector("#links");
 const toast = document.querySelector("#toast");
-const liveStatus = document.querySelector("#liveStatus");
 const CHZZK_CHANNEL_ID = "64baf88d96b2b7b8504e58446f86e1c6";
 function showToast(message) { toast.textContent = message; toast.classList.add("show"); clearTimeout(showToast.timer); showToast.timer = setTimeout(() => toast.classList.remove("show"), 2300); }
-LINKS.forEach(({ title, caption, icon, url }, index) => {
-  const link = document.createElement("a");
-  link.className = "link-card";
-  link.href = url;
-  const mark = icon === "youtube" ? '<img class="brand-logo youtube-logo-image" src="./youtube-logo.svg" alt="" />' : icon === "chzzk" ? '<img class="brand-logo chzzk-logo-image" src="./chzzk-logo.svg" alt="" />' : icon === "artmug" ? '<img class="brand-logo artmug-logo-image" src="./artmug-logo.png" alt="" />' : "𝕏";
-  link.innerHTML = `<div class="link-head"><span class="link-number">0${index + 1}</span><span class="brand-icon ${icon}" aria-hidden="true">${mark}</span></div><span class="link-title">${title.replace("\n", "<br />")}</span><span class="link-caption"><span>${caption}</span><b>↗</b></span>`;
-  if (url !== "#") { link.target = "_blank"; link.rel = "noreferrer"; } else { link.addEventListener("click", (event) => { event.preventDefault(); showToast("링크를 준비 중이에요 ✳"); }); }
-  linksRoot.appendChild(link);
+let linkNumber = 0;
+LINK_GROUPS.forEach(({ title: groupTitle, className, links }) => {
+  const group = document.createElement("section");
+  group.className = `link-panel ${className}`;
+  const liveMarkup = className === "official" ? '<span class="live-dot is-checking" id="liveStatus"><i></i><span>checking</span></span>' : '<span class="panel-flower">✿</span>';
+  group.innerHTML = `<div class="panel-heading"><span class="panel-label">${groupTitle}</span>${liveMarkup}</div><div class="panel-links"></div>`;
+  const grid = group.querySelector(".panel-links");
+  links.forEach(({ title, caption, icon, url }) => {
+    linkNumber += 1;
+    const link = document.createElement("a");
+    link.className = "panel-link";
+    link.href = url;
+    const mark = icon === "youtube" ? '<img class="brand-logo youtube-logo-image" src="./youtube-logo.svg" alt="" />' : icon === "toonation" ? '<img class="brand-logo toon-logo-image" src="./toonation-logo.png" alt="" />' : icon === "chzzk" ? '<img class="brand-logo chzzk-logo-image" src="./chzzk-logo.svg" alt="" />' : icon === "tiktok" ? "♪" : icon === "mail" ? "✉" : "𝕏";
+    link.innerHTML = `<span class="panel-link-top"><span class="panel-link-icon brand-icon ${icon}" aria-hidden="true">${mark}</span><span class="panel-link-title">${title.replace("\n", "<br />")}</span></span><span class="panel-link-bottom"><span class="panel-link-caption">${caption}</span><b class="panel-link-arrow">↗</b></span>`;
+    if (!url.startsWith("mailto:")) { link.target = "_blank"; link.rel = "noreferrer"; }
+    if (icon === "mail") {
+      link.addEventListener("click", async (event) => {
+        event.preventDefault();
+        try { await navigator.clipboard.writeText(caption); showToast("메일 주소를 복사했어요"); }
+        catch { showToast(caption); }
+      });
+    }
+    grid.appendChild(link);
+  });
+  linksRoot.appendChild(group);
 });
+const liveStatus = document.querySelector("#liveStatus");
+const lunarianAge = document.querySelector("#lunarianAge");
 document.querySelector("#shareButton").addEventListener("click", async () => {
   try { await navigator.clipboard.writeText(window.location.href); showToast("페이지 링크를 복사했어요"); }
   catch { showToast("브라우저 메뉴에서 링크를 공유해 주세요"); }
 });
+document.querySelectorAll(".pending-link").forEach((link) => link.addEventListener("click", (event) => { event.preventDefault(); showToast(link.dataset.pending); }));
+
+function updateLunarianAge() {
+  const now = new Date();
+  let age = (now.getFullYear() - 1998) * 12 + (now.getMonth() - 3) + 1;
+  if (now.getDate() < 4) age -= 1;
+  lunarianAge.textContent = String(Math.max(1, age));
+}
+updateLunarianAge();
+setInterval(updateLunarianAge, 60_000);
 
 let lastPetalAt = 0;
 window.addEventListener("pointermove", (event) => {
@@ -33,12 +71,13 @@ window.addEventListener("pointermove", (event) => {
 
   const petal = document.createElement("span");
   petal.className = "cursor-petal";
-  petal.textContent = Math.random() > 0.35 ? "✿" : "✧";
+  petal.textContent = Math.random() > 0.25 ? "✿" : "✧";
   petal.style.left = `${event.clientX + (Math.random() * 18 - 9)}px`;
   petal.style.top = `${event.clientY + (Math.random() * 18 - 9)}px`;
   petal.style.setProperty("--petal-size", `${9 + Math.random() * 9}px`);
   petal.style.setProperty("--petal-drift", `${Math.random() * 70 - 35}px`);
   petal.style.setProperty("--petal-spin", `${Math.random() * 240 - 120}deg`);
+  petal.style.setProperty("--petal-color", Math.random() > 0.5 ? "#d45b91" : "#b978b2");
   document.body.appendChild(petal);
   petal.addEventListener("animationend", () => petal.remove(), { once: true });
 });
